@@ -254,7 +254,15 @@ def process_datapoint(datapoint, fix_repo_function, config, credentials):
     credentials are passed in the following format:
     {'token': token, 'username': username}
     """
+    repo, user_branch_name = get_datapoint(datapoint, config, credentails)
+    # Fixing the repo. fix_repo_function is provided by user.
+    fix_repo_function(datapoint, repo.working_dir, repo, config.out_folder)
+    # Push the corrected repo
+    job_identificator = push_repo(repo, credentials, config, user_branch_name)
+    return job_identificator
 
+
+def get_datapoint(datapoint, config, credentials):
     # TODO think, what to do if test_username (which converts to a branch) is already present
     repo, user_branch_name = get_repo(
         datapoint,
@@ -265,9 +273,10 @@ def process_datapoint(datapoint, fix_repo_function, config, credentials):
     )
     # Prepares workflow file Moves target workflow file to the .github/workflows
     copy_and_edit_workflow_file(datapoint, repo)
-    # Fixing the repo. fix_repo_function is provided by user.
-    fix_repo_function(datapoint, repo.working_dir, repo, config.out_folder)
-    # Push the corrected repo
+    return repo, user_branch_name
+
+
+def push_datapoint(repo, credentails, config, user_branch_name):
     commit_sha = push_repo(repo, credentials, config.benchmark_owner, user_branch_name)
     job_identificator = {
         "repo_name": repo.name,
