@@ -1,5 +1,5 @@
 import json
-import yaml
+import ruemal.yaml
 import click
 import git
 from benchmark_functions import push_repo

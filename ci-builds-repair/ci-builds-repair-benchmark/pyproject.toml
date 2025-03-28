@@ -14,7 +14,8 @@ datasets = "^2.16.1"
 gitpython = "^3.1.41"
 ruamel-yaml = "^0.18.5"
 python-dotenv = "^1.0.1"
-
+click = "^8.0"
+simplejson = "^3.17"  
 
 [build-system]
 requires = ["poetry-core"]
