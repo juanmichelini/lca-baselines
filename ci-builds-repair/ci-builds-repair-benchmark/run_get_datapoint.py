@@ -1,5 +1,5 @@
 import json
-import ruemal.yaml
+import ruamel.yaml
 import click
 from benchmark_functions import get_datapoint
 

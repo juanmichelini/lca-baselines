@@ -1,12 +1,12 @@
 import json
-import ruemal.yaml
+import ruamel.yaml
 import click
 import git
 from benchmark_functions import push_repo
 
 def load_config():
     with open("config.yaml", "r") as file:
-        return yaml.safe_load(file)
+        return ruemal.yaml.load(file)
 
 @click.command()
 @click.argument('repo_path', type=click.STRING)
