@@ -6,7 +6,7 @@ from benchmark_functions import push_repo
 
 def load_config():
     with open("config.yaml", "r") as file:
-        return ruemal.yaml.load(file)
+        return ruamel.yaml.load(file)
 
 @click.command()
 @click.argument('repo_path', type=click.STRING)

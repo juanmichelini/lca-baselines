@@ -5,7 +5,7 @@ from benchmark_functions import get_datapoint
 
 def load_config():
     with open("config.yaml", "r") as file:
-        return ruemal.yaml.load(file)
+        return ruamel.yaml.load(file)
 
 @click.command()
 @click.argument('json_input', type=click.STRING)
