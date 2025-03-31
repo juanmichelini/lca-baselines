@@ -27,8 +27,9 @@ def process_json(json_input):
         result = get_datapoint(datapoint, config, credentials)
         return 0
     except Exception as e:
+        click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
         return f"An unexpected error occurred: {str(e)}"
 
 
 if __name__ == "__main__":
-    return process_json()
+    process_json()

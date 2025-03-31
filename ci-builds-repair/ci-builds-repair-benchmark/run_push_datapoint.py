@@ -24,9 +24,10 @@ def process_json(json_input):
         result = push_repo(repo, credentials, benchmark_owner, user_branch_name)
         return 0
     except Exception as e:
+        click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
         return f"An unexpected error occurred: {str(e)}"
 
 
 if __name__ == "__main__":
-    return process_json()
+    process_json()
 
