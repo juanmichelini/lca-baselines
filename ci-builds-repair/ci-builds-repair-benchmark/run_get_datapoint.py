@@ -14,17 +14,21 @@ def process_json(json_input):
         datapoint = json.loads(json_input)
     except json.JSONDecodeError:
         click.echo("Invalid JSON input", err=True)
-        return
+        return "Invalid JSON"
     
     config = load_config()
     
-    self.credentials = {
-        "username": self.config.username_gh,
-        "token": os.environ.get("TOKEN_GH"),
-        "model": model_name,
-    }
-    result = get_datapoint(datapoint, config, credentials)
-    click.echo(json.dumps(result, indent=2))
+    try:
+        self.credentials = {
+            "username": self.config.username_gh,
+            "token": os.environ.get("TOKEN_GH"),
+            "model": model_name,
+        }
+        result = get_datapoint(datapoint, config, credentials)
+        return 0
+    except Exception as e:
+        return f"An unexpected error occurred: {str(e)}"
+
 
 if __name__ == "__main__":
-    process_json()
+    return process_json()
