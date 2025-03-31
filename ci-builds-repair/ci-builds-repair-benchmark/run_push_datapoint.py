@@ -2,7 +2,7 @@ import json
 import ruamel.yaml
 import click
 import git
-from benchmark_functions import push_repo
+from benhmark_functions import push_repo
 
 def load_config():
     with open("config.yaml", "r") as file:

@@ -1,7 +1,7 @@
 import json
 import ruamel.yaml
 import click
-from benchmark_functions import get_datapoint
+from benhmark_functions import get_datapoint
 
 def load_config():
     with open("config.yaml", "r") as file:
