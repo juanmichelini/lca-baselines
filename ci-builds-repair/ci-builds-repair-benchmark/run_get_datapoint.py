@@ -1,30 +1,35 @@
 import json
 import ruamel.yaml
 import click
+import os
+from types import SimpleNamespace
 from benhmark_functions import get_datapoint
 
 def load_config():
+    yaml = ruamel.yaml.YAML(typ='rt')
     with open("config.yaml", "r") as file:
-        return ruamel.yaml.load(file)
+        return yaml.load(file)
 
 @click.command()
-@click.argument('json_input', type=click.STRING)
-def process_json(json_input):
+@click.option('--json_input', type=str, required=True, help="JSON string input")
+@click.option('--model_name', type=str, required=True, help="model name")
+def process_json(json_input, model_name):
     try:
         datapoint = json.loads(json_input)
     except json.JSONDecodeError:
         click.echo("Invalid JSON input", err=True)
         return "Invalid JSON"
     
-    config = load_config()
+    config = SimpleNamespace(**load_config())
     
     try:
-        self.credentials = {
-            "username": self.config.username_gh,
+        credentials = {
+            "username": config.username_gh,
             "token": os.environ.get("TOKEN_GH"),
             "model": model_name,
         }
-        result = get_datapoint(datapoint, config, credentials)
+        repo, user_branch_name = get_datapoint(datapoint, config, credentials)
+        click.echo(user_branch_name)
         return 0
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
