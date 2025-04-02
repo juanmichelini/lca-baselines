@@ -3,6 +3,7 @@ import ruamel.yaml
 import click
 import os
 import sys
+import traceback
 from types import SimpleNamespace
 from benhmark_functions import get_datapoint
 
