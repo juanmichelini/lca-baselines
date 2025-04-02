@@ -21,9 +21,9 @@ def process_json(json_input, model_name):
         click.echo("Invalid JSON input", err=True)
         sys.exit(1)
     
-    config = SimpleNamespace(**load_config())
     
     try:
+        config = SimpleNamespace(**load_config())
         credentials = {
             "username": config.username_gh,
            "token": config.token_gh,
