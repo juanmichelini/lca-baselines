@@ -19,14 +19,14 @@ def process_json(json_input, model_name):
         datapoint = json.loads(json_input)
     except json.JSONDecodeError:
         click.echo("Invalid JSON input", err=True)
-        return "Invalid JSON"
+        sys.exit(1)
     
     config = SimpleNamespace(**load_config())
     
     try:
         credentials = {
             "username": config.username_gh,
-            "token": os.environ.get("TOKEN_GH"),
+           "token": config.token_gh,
             "model": model_name,
         }
         repo, user_branch_name = get_datapoint(datapoint, config, credentials)

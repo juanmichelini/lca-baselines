@@ -25,7 +25,7 @@ def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner,
         datapoint = json.loads(json_input)
     except json.JSONDecodeError:
         click.echo("Invalid JSON input", err=True)
-        return "Invalid JSON"
+        sys.exit(1)
     try:
         config = SimpleNamespace(**load_config())
         config.user_branch_name = user_branch_name
@@ -33,7 +33,7 @@ def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner,
         repo.name, repo.owner = repo_name, repo_owner
         credentials = {
             "username": config.username_gh,
-            "token": os.environ.get("TOKEN_GH"),
+            "token": config.token_gh,
             "model": model_name,
         }
         benchmark_owner = config.benchmark_owner
