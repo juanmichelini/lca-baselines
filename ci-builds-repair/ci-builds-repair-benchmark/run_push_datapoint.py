@@ -23,10 +23,6 @@ def load_config():
 def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner, json_input ):
     try:
         datapoint = json.loads(json_input)
-    except json.JSONDecodeError:
-        click.echo("Invalid JSON input", err=True)
-        sys.exit(1)
-    try:
         config = SimpleNamespace(**load_config())
         config.user_branch_name = user_branch_name
         repo = git.Repo(repo_path)

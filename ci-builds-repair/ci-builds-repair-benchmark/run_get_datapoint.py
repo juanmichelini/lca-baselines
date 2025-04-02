@@ -17,12 +17,6 @@ def load_config():
 def process_json(json_input, model_name):
     try:
         datapoint = json.loads(json_input)
-    except json.JSONDecodeError:
-        click.echo("Invalid JSON input", err=True)
-        sys.exit(1)
-    
-    
-    try:
         config = SimpleNamespace(**load_config())
         credentials = {
             "username": config.username_gh,
@@ -36,7 +30,6 @@ def process_json(json_input, model_name):
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
         click.echo(f"An unexpected error occurred:\n{traceback.format_exc()}", err=True)
         sys.exit(1)
-
 
 if __name__ == "__main__":
     process_json()
