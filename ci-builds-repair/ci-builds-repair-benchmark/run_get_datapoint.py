@@ -33,6 +33,7 @@ def process_json(json_input, model_name):
         return 0
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
+        click.echo(f"An unexpected error occurred:\n{traceback.format_exc()}", err=True)
         return f"An unexpected error occurred: {str(e)}"
 
 

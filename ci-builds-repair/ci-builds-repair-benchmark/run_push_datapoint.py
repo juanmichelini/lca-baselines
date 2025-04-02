@@ -36,7 +36,8 @@ def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner 
         return 0
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
-        traceback.print_exc()
+        click.echo(f"An unexpected error occurred:\n{traceback.format_exc()}", err=True)
+
         return f"An unexpected error occurred: {str(e)}"
 
 
