@@ -2,6 +2,7 @@ import json
 import ruamel.yaml
 import click
 import git
+import sys
 import os
 from types import SimpleNamespace
 from benhmark_functions import push_repo
@@ -47,12 +48,11 @@ def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner,
             "difficulty": datapoint["difficulty"],
         }
         click.echo(json.dumps(job_identificator, indent=2))
-        return 0
+        sys.exit(0)
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
         click.echo(f"An unexpected error occurred:\n{traceback.format_exc()}", err=True)
-
-        return f"An unexpected error occurred: {str(e)}"
+        sys.exit(1)
 
 
 if __name__ == "__main__":

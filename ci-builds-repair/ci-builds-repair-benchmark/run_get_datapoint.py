@@ -2,6 +2,7 @@ import json
 import ruamel.yaml
 import click
 import os
+import sys
 from types import SimpleNamespace
 from benhmark_functions import get_datapoint
 
@@ -30,11 +31,11 @@ def process_json(json_input, model_name):
         }
         repo, user_branch_name = get_datapoint(datapoint, config, credentials)
         click.echo(user_branch_name)
-        return 0
+        sys.exit(0)
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
         click.echo(f"An unexpected error occurred:\n{traceback.format_exc()}", err=True)
-        return f"An unexpected error occurred: {str(e)}"
+        sys.exit(1)
 
 
 if __name__ == "__main__":
