@@ -46,7 +46,7 @@ def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner,
             "branch_name": user_branch_name,
             "difficulty": datapoint["difficulty"],
         }
-        click.echo(result)
+        click.echo(json.dumps(job_identificator, indent=2))
         return 0
     except Exception as e:
         click.echo(f"An unexpected error occurred: {str(e)}" , err=True)
