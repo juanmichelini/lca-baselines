@@ -1,24 +1,20 @@
-import json
-import ruamel.yaml
 import click
 import os
 import sys
 import traceback
+import scripts_utils
+from datasets import load_dataset
 from types import SimpleNamespace
 from benhmark_functions import get_datapoint
 
-def load_config():
-    yaml = ruamel.yaml.YAML(typ='rt')
-    with open("config.yaml", "r") as file:
-        return yaml.load(file)
 
 @click.command()
-@click.option('--json_input', type=str, required=True, help="JSON string input")
+@click.option('--id', 'data_id', required=True, type=str, help='ID of the data point to fetch')
 @click.option('--model_name', type=str, required=True, help="model name")
-def process_json(json_input, model_name):
+def process_json(data_id, model_name):
     try:
-        datapoint = json.loads(json_input)
-        config = SimpleNamespace(**load_config())
+        datapoint = scripts_utils.fetch_datapoint(data_id)
+        config = SimpleNamespace(**scripts_utils.load_config())
         credentials = {
             "username": config.username_gh,
            "token": config.token_gh,

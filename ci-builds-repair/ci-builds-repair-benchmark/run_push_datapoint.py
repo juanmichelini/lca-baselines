@@ -1,32 +1,25 @@
 import json
-import ruamel.yaml
 import click
 import git
 import sys
 import os
+import scripts_utils
 from types import SimpleNamespace
 from benhmark_functions import push_repo
 import traceback
 
-def load_config():
-    yaml = ruamel.yaml.YAML(typ='rt')
-    with open("config.yaml", "r") as file:
-        return yaml.load(file)
-
 @click.command()
-@click.option('--repo_path', type=str, required=True, help="Path to the fixed repo.")
 @click.option('--model_name', type=str, required=True, help="model name")
 @click.option('--user_branch_name', type=str, required=True, help="user branch name provided by run_get_datapoint")
-@click.option('--repo_name', type=str, required=True, help="repo name in instace datapoint")
-@click.option('--repo_owner', type=str, required=True, help="repo owner in instance datapoint")
-@click.option('--json_input', type=str, required=True, help="JSON string input")
-def process_json(repo_path, model_name, user_branch_name, repo_name, repo_owner, json_input ):
+@click.option('--id', 'data_id', required=True, type=str, help='ID of the data point to fetch')
+def process_json(model_name, user_branch_name, data_id ):
     try:
-        datapoint = json.loads(json_input)
-        config = SimpleNamespace(**load_config())
+        datapoint = scripts_utils.fetch_datapoint(data_id)
+        config = SimpleNamespace(**scripts_utils.load_config())
         config.user_branch_name = user_branch_name
+        repo_path = os.path.join(config.repos_folder, f"{datapoint['repo_owner']}__{datapoint['repo_name']}")
         repo = git.Repo(repo_path)
-        repo.name, repo.owner = repo_name, repo_owner
+        repo.name, repo.owner = datapoint['repo_name'], datapoint['repo_owner']
         credentials = {
             "username": config.username_gh,
             "token": config.token_gh,
