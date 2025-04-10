@@ -22,7 +22,7 @@ def filter_by_id(example, ids):
 class CIFixBenchmark:
     def __init__(self, model_name, config_path):
 
-        benchmark_owner = "LCA-CI-builds-repair"
+        benchmark_owner = "ICML-25-BenchName-builds-repair"
         self.dataset_id = "JetBrains-Research/lca-ci-builds-repair"
 
         self.config = OmegaConf.load(config_path)
@@ -110,31 +110,34 @@ class CIFixBenchmark:
         jobs_ids_invalid = []
         # TODO discuss number of attempts and waiting time
         while len(jobs_ids_await) > 0 and n_attempts < 12:
-            jobs_ids_await_new = []
-            for job_id in jobs_ids_await:
-                job_url, conclusion = get_results(job_id, self.config, self.credentials)
-                if conclusion == "waiting":
-                    jobs_ids_await_new.append(job_id)
-                elif conclusion == "error":
-                    jobs_ids_invalid.append(job_id)
-                else:
-                    job_id["url"] = job_url
-                    job_id["conclusion"] = conclusion
-                    jobs_results.append(job_id)
-                    json.dump(job_id, result_file)
-                    result_file.write("\n")
+            try:
+                jobs_ids_await_new = []
+                for job_id in jobs_ids_await:
+                    job_url, conclusion = get_results(job_id, self.config, self.credentials)
+                    if conclusion == "waiting":
+                        jobs_ids_await_new.append(job_id)
+                    elif conclusion == "error":
+                        jobs_ids_invalid.append(job_id)
+                    else:
+                        job_id["url"] = job_url
+                        job_id["conclusion"] = conclusion
+                        jobs_results.append(job_id)
+                        json.dump(job_id, result_file)
+                        result_file.write("\n")
 
-            jobs_ids_await = jobs_ids_await_new
-            if len(jobs_ids_await) != 0:
-                result_file.close()
-                save_jsonl(jobs_awaiting_file_path, jobs_ids_await)
-                save_jsonl(jobs_invalid_file_path, jobs_ids_invalid)
-                print(
-                    f"Waiting 360 s to next request of evaluation. {len(jobs_ids_await)} jobs in waiting list."
-                )
-                time.sleep(360)
-                result_file = open(jobs_results_file_path, "a")
+                jobs_ids_await = jobs_ids_await_new
+                if len(jobs_ids_await) != 0:
+                    result_file.close()
+                    save_jsonl(jobs_awaiting_file_path, jobs_ids_await)
+                    save_jsonl(jobs_invalid_file_path, jobs_ids_invalid)
+                    print(
+                        f"Waiting 360 s to next request of evaluation. {len(jobs_ids_await)} jobs in waiting list."
+                    )
+                    time.sleep(360)
+                    result_file = open(jobs_results_file_path, "a")
 
+            except Exception as e:
+                print(f"An unexpected error occurred: {str(e)}")
             n_attempts += 1
 
         result_file.close()
