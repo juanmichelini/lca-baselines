@@ -9,8 +9,8 @@ from benhmark_functions import push_repo
 import traceback
 
 @click.command()
-@click.option('--model_name', type=str, required=True, help="model name")
-@click.option('--user_branch_name', type=str, required=True, help="user branch name provided by run_get_datapoint")
+@click.option('--model-name', type=str, required=True, help="model name")
+@click.option('--user-branch-name', type=str, required=True, help="user branch name provided by run_get_datapoint")
 @click.option('--id', 'data_id', required=True, type=str, help='ID of the data point to fetch')
 def process_json(model_name, user_branch_name, data_id ):
     try:

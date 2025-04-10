@@ -9,8 +9,8 @@ from benhmark_functions import get_datapoint
 
 
 @click.command()
-@click.option('--id', 'data_id', required=True, type=str, help='ID of the data point to fetch')
-@click.option('--model_name', type=str, required=True, help="model name")
+@click.option('--id', 'data-id', required=True, type=str, help='ID of the data point to fetch')
+@click.option('--model-name', type=str, required=True, help="model name")
 def process_json(data_id, model_name):
     try:
         datapoint = scripts_utils.fetch_datapoint(data_id)
